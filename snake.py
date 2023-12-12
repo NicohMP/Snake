@@ -21,34 +21,41 @@ while True:
     
     
     color = (0, 0, 255) # blue
-    rect = pygame.Rect(0, 0,  TAILLE_CASE-2, TAILLE_CASE-2)
+    tete = pygame.Rect(0, 0,  TAILLE_CASE, TAILLE_CASE)
 
     orientation = "droite"
     def mvt(orientation):
         if orientation == "haut":
-            rect.y += TAILLE_CASE
+            tete.y += TAILLE_CASE
         elif orientation == "bas":
-            rect.y -= TAILLE_CASE
+            tete.y -= TAILLE_CASE
         elif orientation == "droite":
-            rect.x += TAILLE_CASE
+            tete.x += TAILLE_CASE
         else :
-            rect.x -= TAILLE_CASE
+            tete.x -= TAILLE_CASE
 
-    pygame.draw.rect(screen, color, rect)
+    pygame.draw.rect(screen, color, tete)
     pygame.display.set_caption("Jeu Python")
+
 
 
     
 
     for event in pygame.event.get():
         if event.type ==pygame.KEYDOWN:
-            if event.type == pygame.K_q:
+            if event.type == pygame.K_p:
                 pygame.quit()
             if event.key == pygame.K_z:
                 orientation = "haut"
-        mvt(orientation)
+            if event.key == pygame.K_s:
+                orientation = "bas"
+            if event.key == pygame.K_q:
+                orientation = "gauche"
+            if event.key == pygame.K_d:
+                orientation = "droite"
+    mvt(orientation)
 
-
+    pygame.display.flip()
     pygame.display.update()
 
 
