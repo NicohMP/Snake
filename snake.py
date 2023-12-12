@@ -15,24 +15,24 @@ while True:
 
     screen.fill( (16, 255, 34) )
     for i in range(0,500,TAILLE_CASE):
-        for j in range(0,500,TAILLE_CASE):
-            CASE = pygame.Rect(i,j,TAILLE_CASE,TAILLE_CASE)
-            pygame.draw.TAILLE_CASE(screen, BLANC, CASE, 1)
+        for j in range(i,500+i,2*TAILLE_CASE):
+            CASE = pygame.Rect(i,j%500,TAILLE_CASE,TAILLE_CASE)
+            pygame.draw.rect(screen, BLANC, CASE)
     
     
     color = (0, 0, 255) # blue
-    rect = pygame.Rect(0, 0,TAILLE_CASE , TAILLE_CASE)
+    rect = pygame.Rect(0, 0,  TAILLE_CASE-2, TAILLE_CASE-2)
 
     orientation = "droite"
     def mvt(orientation):
         if orientation == "haut":
-            rect.y += 10
+            rect.y += TAILLE_CASE
         elif orientation == "bas":
-            rect.y -= 10
+            rect.y -= TAILLE_CASE
         elif orientation == "droite":
-            rect.x += 10
+            rect.x += TAILLE_CASE
         else :
-            rect.x -= 10
+            rect.x -= TAILLE_CASE
 
     pygame.draw.rect(screen, color, rect)
     pygame.display.set_caption("Jeu Python")
