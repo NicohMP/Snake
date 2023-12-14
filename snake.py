@@ -1,75 +1,71 @@
 import pygame
 
 pygame.init()
-
 clock = pygame.time.Clock()
+screen = pygame.display.set_mode((500, 500))
 
-screen = pygame.display.set_mode( (500,500) )
-BLANC = (255,255,255)
-TAILLE_CASE = 25
-positions = [(10*TAILLE_CASE,10*TAILLE_CASE),(10*TAILLE_CASE,11*TAILLE_CASE),(10*TAILLE_CASE,12*TAILLE_CASE)]
-orientation = "haut"
+WHITE = (255, 255, 255)
+TILE_SIZE = 25
+CLOCK_FREQUENCY = 10
+BACKSCREEN_COLOR = (16, 255, 34)
+BODY_COLOR = (0, 0, 255)  # couleur du corps
+HEAD_COLOR = (100, 100, 255)
+
+
+def display(positions):
+    for coord in positions[:-1]:
+        rect = pygame.Rect(coord[0], coord[1], TILE_SIZE, TILE_SIZE)
+        pygame.draw.rect(screen, BODY_COLOR, rect)
+    head = pygame.Rect(positions[-1][0], positions[-1][1], TILE_SIZE, TILE_SIZE)
+    pygame.draw.rect(screen, HEAD_COLOR, head)
+
+
+def movement(orientation):
+    if orientation == "up":
+        new_head = (positions[-1][0], positions[-1][1] - TILE_SIZE)
+    if orientation == "down":
+        new_head = (positions[-1][0], positions[-1][1] + TILE_SIZE)
+    if orientation == "right":
+        new_head = (positions[-1][0] + TILE_SIZE, positions[-1][1])
+    if orientation == "left":
+        new_head = (positions[-1][0] - TILE_SIZE, positions[-1][1])
+    positions.append(new_head)
+    positions.pop(0)
+    display(positions)
+
+
+positions = [
+    (10 * TILE_SIZE, 10 * TILE_SIZE),
+    (10 * TILE_SIZE, 11 * TILE_SIZE),
+    (10 * TILE_SIZE, 12 * TILE_SIZE),
+]
+
+orientation = "up"
 while True:
+    clock.tick(CLOCK_FREQUENCY)
+    screen.fill(BACKSCREEN_COLOR)
 
-    clock.tick(10)
-    screen.fill( (16, 255, 34) )
-    for i in range(0,500,TAILLE_CASE):
-        for j in range(i,500+i,2*TAILLE_CASE):
-            CASE = pygame.Rect(i,j%500,TAILLE_CASE,TAILLE_CASE)
-            pygame.draw.rect(screen, BLANC, CASE)
-    
-    
-    color = (0, 0, 255) # couleur du corps
-    head_color = (100,100,255)
-
-    def afficher(positions):
-        for coord in positions[:-1]:
-            rect = pygame.Rect(coord[0], coord[1],  TAILLE_CASE, TAILLE_CASE)
-            pygame.draw.rect(screen,color,rect)
-        tête = pygame.Rect(positions[-1][0],positions[-1][1],TAILLE_CASE,TAILLE_CASE)
-        pygame.draw.rect(screen,head_color,tête)
-    
+    for i in range(0, 500, TILE_SIZE):
+        for j in range(i, 500 + i, 2 * TILE_SIZE):
+            TILE = pygame.Rect(i, j % 500, TILE_SIZE, TILE_SIZE)
+            pygame.draw.rect(screen, WHITE, TILE)
 
     for event in pygame.event.get():
-        if event.type ==pygame.KEYDOWN:
-            if event.type == pygame.K_p:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
                 pygame.quit()
             elif event.key == pygame.K_z:
-                orientation = "haut"
+                orientation = "up"
             elif event.key == pygame.K_s:
-                orientation = "bas"
+                orientation = "down"
             elif event.key == pygame.K_q:
-                orientation = "gauche"
+                orientation = "left"
             elif event.key == pygame.K_d:
-                orientation = "droite"
+                orientation = "right"
 
-        
-    def mvt(orientation):
-        nouvelle_tête = (0,0)
-        if orientation == "haut":
-            nouvelle_tête = (positions[-1][0],positions[-1][1]-TAILLE_CASE)
-        if orientation == "bas":
-            nouvelle_tête = (positions[-1][0],positions[-1][1]+TAILLE_CASE)
-        if orientation == "droite":
-            nouvelle_tête = (positions[-1][0]+TAILLE_CASE,positions[-1][1])
-        if orientation == "gauche" :
-            nouvelle_tête = (positions[-1][0]-TAILLE_CASE,positions[-1][1])
-        positions.append(nouvelle_tête)
-        positions.pop(0)
-        afficher(positions)
-        print(positions)
-    
     pygame.display.set_caption("Jeu Python")
-    
-    mvt(orientation)
+
+    movement(orientation)
     pygame.display.update()
 
     pygame.display.flip()
-    
-
-
-
-
-
-
-
