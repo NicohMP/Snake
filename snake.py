@@ -7,7 +7,8 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode( (500,500) )
 BLANC = (255,255,255)
 TAILLE_CASE = 25
-
+positions = [(10*TAILLE_CASE,10*TAILLE_CASE),(10*TAILLE_CASE,11*TAILLE_CASE),(10*TAILLE_CASE,12*TAILLE_CASE)]
+orientation = "haut"
 while True:
 
     clock.tick(10)
@@ -18,12 +19,15 @@ while True:
             pygame.draw.rect(screen, BLANC, CASE)
     
     
-    color = (0, 0, 255) # blue
+    color = (0, 0, 255) # couleur du corps
+    head_color = (100,100,255)
+
     def afficher(positions):
-        for coord in positions:
+        for coord in positions[:-1]:
             rect = pygame.Rect(coord[0], coord[1],  TAILLE_CASE, TAILLE_CASE)
             pygame.draw.rect(screen,color,rect)
-
+        tête = pygame.Rect(positions[-1][0],positions[-1][1],TAILLE_CASE,TAILLE_CASE)
+        pygame.draw.rect(screen,head_color,tête)
     
 
     for event in pygame.event.get():
