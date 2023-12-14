@@ -4,7 +4,7 @@ pygame.init()
 
 clock = pygame.time.Clock()
 
-screen = pygame.display.set_mode( (500,500) )
+screen = pygame.display.set_mode((500,500))
 
 TAILLE_CASE = 25
 
@@ -19,44 +19,47 @@ while True:
             CASE = pygame.Rect(i,j%500,TAILLE_CASE,TAILLE_CASE)
             pygame.draw.rect(screen, BLANC, CASE)
     
-    
+    positions = [(10*TAILLE_CASE,10*TAILLE_CASE),(10*TAILLE_CASE,11*TAILLE_CASE),(10*TAILLE_CASE,12*TAILLE_CASE)]
     color = (0, 0, 255) # blue
-    tete = pygame.Rect(0, 0,  TAILLE_CASE, TAILLE_CASE)
+    def afficher(positions):
+        for coord in positions:
+            rect = pygame.Rect(coord[0], coord[1],  TAILLE_CASE, TAILLE_CASE)
+            pygame.draw.rect(screen,color,rect)
 
     orientation = "droite"
     def mvt(orientation):
         if orientation == "haut":
-            tete.y += TAILLE_CASE
+            positions.append((positions[0][0],positions[0][0]-TAILLE_CASE))
         elif orientation == "bas":
-            tete.y -= TAILLE_CASE
+            positions.append((positions[0][0],positions[0][0]+TAILLE_CASE))
         elif orientation == "droite":
-            tete.x += TAILLE_CASE
+            positions.append((positions[0][0]+TAILLE_CASE,positions[0][0]))
         else :
-            tete.x -= TAILLE_CASE
-
-    pygame.draw.rect(screen, color, tete)
-    pygame.display.set_caption("Jeu Python")
-
-
-
+            positions.append((positions[0][0]-TAILLE_CASE,positions[0][0]))
+        positions.pop(-1)
+        afficher(positions)
+        print(positions)
     
+    pygame.display.set_caption("Jeu Python")
 
     for event in pygame.event.get():
         if event.type ==pygame.KEYDOWN:
             if event.type == pygame.K_p:
                 pygame.quit()
-            if event.key == pygame.K_z:
+            elif event.key == pygame.K_z:
                 orientation = "haut"
-            if event.key == pygame.K_s:
+            elif event.key == pygame.K_s:
                 orientation = "bas"
-            if event.key == pygame.K_q:
+            elif event.key == pygame.K_q:
                 orientation = "gauche"
-            if event.key == pygame.K_d:
+            elif event.key == pygame.K_d:
                 orientation = "droite"
+    
     mvt(orientation)
+    pygame.display.update()
 
     pygame.display.flip()
-    pygame.display.update()
+    
 
 
 
